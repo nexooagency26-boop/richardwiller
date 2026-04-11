@@ -33,11 +33,12 @@
     font-weight: 300;
     background: var(--blanc);
     color: var(--noir);
-    overflow-x: hidden;
+    /* overflow-x retiré du body — casse position:fixed sur iOS Safari */
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  html { overflow-x: hidden; } /* overflow-x ici ne casse pas position:fixed */
 
   /* ═══════════════════════════════════════════
      PRELOADER
@@ -117,7 +118,6 @@
     background: var(--blanc);
   }
 
-  /* Luminous radial glows — white/silver, no beige */
   .hero::before {
     content: '';
     position: absolute; inset: 0;
@@ -129,7 +129,6 @@
     z-index: 0;
   }
 
-  /* Subtle sheen lines */
   .hero::after {
     content: '';
     position: absolute; inset: 0;
@@ -174,7 +173,7 @@
   }
 
   /* ═══════════════════════════════════════════
-     BUTTONS — premium, generous, impactful
+     BUTTONS
   ═══════════════════════════════════════════ */
   .btn {
     display: flex; align-items: center; justify-content: center; gap: 12px;
@@ -187,7 +186,6 @@
     min-height: 60px;
   }
 
-  /* WhatsApp — noir laqué premium */
   .btn-wa {
     background: var(--noir);
     color: var(--blanc);
@@ -203,7 +201,6 @@
   }
   .btn-wa:hover { background: #222; transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.22); }
 
-  /* Instagram — outline élégant */
   .btn-out {
     background: transparent;
     color: var(--noir);
@@ -211,7 +208,6 @@
   }
   .btn-out:hover { background: var(--noir); color: var(--blanc); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
 
-  /* Gold CTA */
   .btn-or {
     background: var(--or);
     color: var(--blanc);
@@ -221,7 +217,6 @@
   }
   .btn-or:hover { background: var(--or-light); transform: translateY(-3px); box-shadow: 0 12px 36px rgba(196,166,106,0.34); }
 
-  /* Footer outline */
   .btn-f-out {
     background: transparent;
     color: rgba(255,255,255,.7);
@@ -321,7 +316,7 @@
   .sl { font-size: 9px; font-weight: 500; letter-spacing: .34em; text-transform: uppercase; color: var(--gris-mid); }
 
   /* ═══════════════════════════════════════════
-     SLIDER SECTIONS — auto-scroll motion design
+     SLIDER SECTIONS
   ═══════════════════════════════════════════ */
   .sl-sec { padding: clamp(72px,10vw,130px) 0; overflow: hidden; }
   .sl-head {
@@ -336,13 +331,14 @@
   }
   .sl-hint::before { content: ''; width: 26px; height: 1px; background: var(--gris-clair); }
 
-  /* Outer wrapper for fade masks */
   .sl-outer {
     position: relative;
     overflow: hidden;
   }
   .sl-outer::before,
   .sl-outer::after {
+    display: none;
+  }
     content: '';
     position: absolute; top: 0; bottom: 0;
     width: clamp(40px,8vw,90px);
@@ -374,7 +370,6 @@
   .sl-track::-webkit-scrollbar { display: none; }
   .sl-track.grab { cursor: grabbing; }
 
-  /* AUTO-SCROLL animation */
   .sl-auto-wrap {
     position: relative;
     overflow: hidden;
@@ -386,10 +381,9 @@
     width: max-content;
     will-change: transform;
   }
-  /* The auto-scroll animation is applied via JS for pause-on-hover */
 
   /* ═══════════════════════════════════════════
-     CARDS — premium editorial
+     CARDS
   ═══════════════════════════════════════════ */
   .card {
     flex: 0 0 clamp(260px,72vw,350px);
@@ -448,7 +442,7 @@
   .dot.on { background: var(--or); width: 36px; }
 
   /* ═══════════════════════════════════════════
-     FOOTER — noir profond, élégant
+     FOOTER
   ═══════════════════════════════════════════ */
   footer {
     background: #0A0A0A;
@@ -465,7 +459,6 @@
       radial-gradient(ellipse 60% 40% at 50% 0%, rgba(196,166,106,.03) 0%, transparent 60%);
     pointer-events: none;
   }
-  /* Sheen top border */
   footer::after {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 1px;
@@ -549,9 +542,249 @@
   @media (min-width: 768px) {
     .hero-logo { width: min(62vw, 520px); }
   }
+
+  /* ═══════════════════════════════════════════
+     LANG TOGGLE — Bouton FR / EN
+  ═══════════════════════════════════════════ */
+  #lang-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 8000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 15px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(13, 13, 13, 0.13);
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.40em;
+    text-transform: uppercase;
+    color: var(--noir);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+    user-select: none;
+    outline: none;
+    opacity: 0;
+    pointer-events: none;
+  }
+  #lang-toggle.lt-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  #lang-toggle:hover {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: rgba(196, 166, 106, 0.5);
+    color: var(--or);
+    box-shadow: 0 4px 22px rgba(0, 0, 0, 0.09);
+  }
+  #lang-toggle:hover .lt-dot { background: var(--or-light); }
+  .lt-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--or);
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background 0.3s ease;
+  }
+  .lt-label { line-height: 1; }
+
+  /* ═══════════════════════════════════════════
+     INSTALL BANNER — Ajouter à l'écran d'accueil
+  ═══════════════════════════════════════════ */
+  #install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 8500;
+    background: #111111;
+    border-top: 1px solid rgba(196, 166, 106, 0.20);
+    padding: 18px clamp(18px, 5vw, 36px);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transform: translateY(110%);
+    transition: transform 0.60s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.35);
+  }
+  #install-banner.ib-visible {
+    transform: translateY(0);
+  }
+
+  /* App icon */
+  .ib-app-icon {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--or);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .ib-app-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+  }
+
+  /* Text block */
+  .ib-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .ib-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ib-sub {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    color: rgba(255, 255, 255, 0.38);
+    line-height: 1.55;
+  }
+
+  /* iOS steps */
+  .ib-ios-steps {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+  }
+  .ib-step {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9.5px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.42);
+    letter-spacing: 0.03em;
+  }
+  .ib-step-num {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: rgba(196, 166, 106, 0.15);
+    border: 1px solid rgba(196, 166, 106, 0.30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7.5px;
+    font-weight: 500;
+    color: var(--or);
+    flex-shrink: 0;
+  }
+  .ib-step-sep {
+    color: rgba(255, 255, 255, 0.16);
+    font-size: 9px;
+  }
+
+  /* Action area */
+  .ib-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .ib-install-btn {
+    padding: 9px 18px;
+    background: var(--or);
+    color: #ffffff;
+    border: none;
+    border-radius: 2px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.30em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    white-space: nowrap;
+  }
+  .ib-install-btn:hover {
+    background: var(--or-light);
+    box-shadow: 0 4px 18px rgba(196, 166, 106, 0.40);
+  }
+  .ib-close-btn {
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.35);
+    transition: border-color 0.3s ease, color 0.3s ease;
+    flex-shrink: 0;
+  }
+  .ib-close-btn:hover {
+    border-color: rgba(255, 255, 255, 0.30);
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .ib-close-btn svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  @media (max-width: 520px) {
+    #install-banner {
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 16px 18px;
+    }
+    .ib-app-icon { order: 1; }
+    .ib-text { order: 2; flex: 1; }
+    .ib-actions { order: 3; width: 100%; justify-content: space-between; }
+    .ib-install-btn { flex: 1; text-align: center; padding: 12px 10px; }
+    .ib-close-btn { order: 0; margin-left: auto; }
+  }
 </style>
 </head>
 <body>
+
+<!-- ════════════════════════════════════════════
+     LANG TOGGLE BUTTON — Bouton FR / EN fixe en haut à droite
+     Apparaît après le preloader. Bascule toute la page FR ↔ EN.
+════════════════════════════════════════════ -->
+<button id="lang-toggle" aria-label="Switch language">
+  <span class="lt-dot"></span>
+  <span class="lt-label">EN</span>
+</button>
+
+<!-- ════════════════════════════════════════════
+     INSTALL BANNER — PWA / Ajouter à l'écran d'accueil
+     Affiché après le preloader si non encore installé / non rejeté récemment.
+     Contenu injecté dynamiquement selon iOS / Android / Desktop.
+════════════════════════════════════════════ -->
+<div id="install-banner" role="complementary" aria-label="Installer l'application">
+  <div class="ib-app-icon">
+    <img src="https://res.cloudinary.com/dkm8cbylh/image/upload/v1775911225/logo1_ccnf1n.png" alt="RT Real Estate">
+  </div>
+  <div class="ib-text">
+    <div class="ib-title">RT Real Estate & Concierge</div>
+    <div class="ib-sub" id="ib-sub-content"><!-- rempli par JS --></div>
+  </div>
+  <div class="ib-actions" id="ib-actions-content"><!-- rempli par JS --></div>
+</div>
 
 <!-- ════════════════════════════════════════════
      PRELOADER
@@ -583,17 +816,21 @@
     <div class="hero-cta">
       <a href="https://wa.me/33632004327" target="_blank" rel="noopener" class="btn btn-wa">
         <svg class="bi" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Contacter par WhatsApp
+        <span data-i18n="btn-wa">Contacter par WhatsApp</span>
       </a>
       <a href="https://instagram.com/rt_realestate_privateconcierge" target="_blank" rel="noopener" class="btn btn-out">
-        <svg class="bi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/></svg>
-        Voir sur Instagram
+        <svg class="bi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="12" rx="2"></rect>
+          <line x1="8" y1="20" x2="16" y2="20"></line>
+          <line x1="12" y1="16" x2="12" y2="20"></line>
+        </svg>
+        <span data-i18n="btn-website">Voir mon site</span>
       </a>
     </div>
   </div>
 
   <div class="hero-scroll" aria-hidden="true">
-    <span class="hs-txt">Découvrir</span>
+    <span class="hs-txt" data-i18n="scroll-txt">Découvrir</span>
     <div class="hs-line"></div>
   </div>
 </section>
@@ -605,24 +842,24 @@
 ════════════════════════════════════════════ -->
 <section class="sec about">
   <div class="reveal">
-    <span class="lbl">Notre Maison</span>
-    <h2 class="st">Un service pensé<br>pour <em>l'exception</em></h2>
-    <p>RT Real Estate & Private Concierge est une maison de services exclusive, dédiée à une clientèle internationale exigeante. Nous orchestrons chaque détail de votre séjour, de votre propriété, de votre expérience — avec discrétion absolue et précision chirurgicale.</p>
-    <p>De la Côte d'Azur aux destinations les plus prisées du monde, nous mettons notre réseau privilégié et notre expertise inégalée au service de vos ambitions les plus raffinées.</p>
+    <span class="lbl" data-i18n="about-lbl">Notre Maison</span>
+    <h2 class="st" data-i18n="about-h2">Un service pensé<br>pour <em>l'exception</em></h2>
+    <p data-i18n="about-p1">RT Real Estate & Private Concierge est une maison de services exclusive, dédiée à une clientèle internationale exigeante. Nous orchestrons chaque détail de votre séjour, de votre propriété, de votre expérience — avec discrétion absolue et précision chirurgicale.</p>
+    <p data-i18n="about-p2">De la Côte d'Azur aux destinations les plus prisées du monde, nous mettons notre réseau privilégié et notre expertise inégalée au service de vos ambitions les plus raffinées.</p>
     <div class="zones">
       <span class="ztag">Côte d'Azur</span>
       <span class="ztag">International</span>
-      <span class="ztag">Immobilier de luxe</span>
-      <span class="ztag">Conciergerie privée</span>
-      <span class="ztag">Expériences exclusives</span>
+      <span class="ztag" data-i18n="ztag-luxury">Immobilier de luxe</span>
+      <span class="ztag" data-i18n="ztag-concierge">Conciergerie privée</span>
+      <span class="ztag" data-i18n="ztag-experiences">Expériences exclusives</span>
     </div>
   </div>
 
   <div class="stats reveal d2">
-    <div class="stat"><span class="sn">12+</span><span class="sl">Destinations</span></div>
-    <div class="stat"><span class="sn">500+</span><span class="sl">Clients servis</span></div>
-    <div class="stat"><span class="sn">24/7</span><span class="sl">Disponibilité</span></div>
-    <div class="stat"><span class="sn">100%</span><span class="sl">Sur-mesure</span></div>
+    <div class="stat"><span class="sn">12+</span><span class="sl" data-i18n="stat-destinations">Destinations</span></div>
+    <div class="stat"><span class="sn">500+</span><span class="sl" data-i18n="stat-clients">Clients servis</span></div>
+    <div class="stat"><span class="sn">24/7</span><span class="sl" data-i18n="stat-dispo">Disponibilité</span></div>
+    <div class="stat"><span class="sn">100%</span><span class="sl" data-i18n="stat-sur-mesure">Sur-mesure</span></div>
   </div>
 </section>
 
@@ -634,10 +871,10 @@
 <section class="sl-sec" id="destSec">
   <div class="sl-head">
     <div class="reveal">
-      <span class="lbl">Destinations Phares</span>
-      <h2 class="st">Nos <em>terrains</em><br>d'excellence</h2>
+      <span class="lbl" data-i18n="dest-lbl">Destinations Phares</span>
+      <h2 class="st" data-i18n="dest-h2">Nos <em>terrains</em><br>d'excellence</h2>
     </div>
-    <span class="sl-hint">Glisser</span>
+    <span class="sl-hint" data-i18n="hint-glisser">Glisser</span>
   </div>
 
   <div class="sl-outer" id="dOuter">
@@ -659,10 +896,10 @@
 <section class="sl-sec" data-bg="pale" id="servSec" style="background:var(--blanc-perle);">
   <div class="sl-head">
     <div class="reveal">
-      <span class="lbl">Nos Prestations</span>
-      <h2 class="st">Des services<br><em>sur-mesure</em></h2>
+      <span class="lbl" data-i18n="serv-lbl">Nos Prestations</span>
+      <h2 class="st" data-i18n="serv-h2">Des services<br><em>sur-mesure</em></h2>
     </div>
-    <span class="sl-hint">Glisser</span>
+    <span class="sl-hint" data-i18n="hint-glisser">Glisser</span>
   </div>
 
   <div class="sl-outer" id="sOuter">
@@ -685,8 +922,8 @@
       src="https://res.cloudinary.com/dkm8cbylh/image/upload/v1775911225/logo1_ccnf1n.png"
       alt="RT Real Estate">
     <div class="f-line" aria-hidden="true"></div>
-    <h2 class="f-ttl">Prenons contact</h2>
-    <p class="f-sub">Disponible 24h/24 — 7j/7</p>
+    <h2 class="f-ttl" data-i18n="f-ttl">Prenons contact</h2>
+    <p class="f-sub" data-i18n="f-sub">Disponible 24h/24 — 7j/7</p>
 
     <div class="f-cta">
       <a href="https://wa.me/33632004327" target="_blank" rel="noopener" class="btn btn-or">
@@ -697,7 +934,7 @@
         <svg class="bi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/></svg>
         Instagram
       </a>
-      <a href="mailto:contact@rt-concierge.com" class="btn btn-f-out">
+      <a href="/cdn-cgi/l/email-protection#27444546564144537115134a444546444e42574042694408464440" class="btn btn-f-out">
         <svg class="bi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Email
       </a>
@@ -711,60 +948,123 @@
     </div>
 
     <div class="f-div"></div>
-    <p class="f-leg">© 2025 RT Real Estate & Private Concierge</p>
+    <p class="f-leg" data-i18n="f-leg">© 2025 RT Real Estate & Private Concierge</p>
   </div>
 </footer>
 
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
 /* ════════════════════════════════════════
-   DATA
+   DICTIONNAIRE FR / EN
+   Toutes les chaînes traduisibles du site.
+   Les valeurs peuvent contenir du HTML (em, br…).
+════════════════════════════════════════ */
+const TRANSLATIONS = {
+  fr: {
+    'btn-wa':            'Contacter par WhatsApp',
+    'btn-website':       'Voir mon site',
+    'scroll-txt':        'Découvrir',
+    'about-lbl':         'Notre Maison',
+    'about-h2':          'Un service pensé<br>pour <em>l\'exception</em>',
+    'about-p1':          'RT Real Estate & Private Concierge est une maison de services exclusive, dédiée à une clientèle internationale exigeante. Nous orchestrons chaque détail de votre séjour, de votre propriété, de votre expérience — avec discrétion absolue et précision chirurgicale.',
+    'about-p2':          'De la Côte d\'Azur aux destinations les plus prisées du monde, nous mettons notre réseau privilégié et notre expertise inégalée au service de vos ambitions les plus raffinées.',
+    'ztag-luxury':       'Immobilier de luxe',
+    'ztag-concierge':    'Conciergerie privée',
+    'ztag-experiences':  'Expériences exclusives',
+    'stat-destinations': 'Destinations',
+    'stat-clients':      'Clients servis',
+    'stat-dispo':        'Disponibilité',
+    'stat-sur-mesure':   'Sur-mesure',
+    'dest-lbl':          'Destinations Phares',
+    'dest-h2':           'Nos <em>terrains</em><br>d\'excellence',
+    'hint-glisser':      'Glisser',
+    'serv-lbl':          'Nos Prestations',
+    'serv-h2':           'Des services<br><em>sur-mesure</em>',
+    'f-ttl':             'Prenons contact',
+    'f-sub':             'Disponible 24h/24 — 7j/7',
+    'f-leg':             '© 2025 RT Real Estate & Private Concierge',
+  },
+  en: {
+    'btn-wa':            'Contact via WhatsApp',
+    'btn-website':       'Visit my website',
+    'scroll-txt':        'Discover',
+    'about-lbl':         'Our House',
+    'about-h2':          'A service crafted<br>for <em>excellence</em>',
+    'about-p1':          'RT Real Estate & Private Concierge is an exclusive service house, dedicated to a discerning international clientele. We orchestrate every detail of your stay, your property, your experience — with absolute discretion and surgical precision.',
+    'about-p2':          'From the Côte d\'Azur to the world\'s most coveted destinations, we place our privileged network and unparalleled expertise at the service of your most refined ambitions.',
+    'ztag-luxury':       'Luxury Real Estate',
+    'ztag-concierge':    'Private Concierge',
+    'ztag-experiences':  'Exclusive Experiences',
+    'stat-destinations': 'Destinations',
+    'stat-clients':      'Clients served',
+    'stat-dispo':        'Availability',
+    'stat-sur-mesure':   'Bespoke',
+    'dest-lbl':          'Key Destinations',
+    'dest-h2':           'Our <em>fields</em><br>of excellence',
+    'hint-glisser':      'Slide',
+    'serv-lbl':          'Our Services',
+    'serv-h2':           'Bespoke<br><em>experiences</em>',
+    'f-ttl':             'Get in touch',
+    'f-sub':             'Available 24 / 7',
+    'f-leg':             '© 2025 RT Real Estate & Private Concierge',
+  }
+};
+
+/* ════════════════════════════════════════
+   DATA — Bilingue (FR + EN)
 ════════════════════════════════════════ */
 const DESTINATIONS = [
-  { country:"France",  title:"Côte d'Azur",  img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914492/CT1_uuy2ac.jpg", href:"https://richardwiller.com/cote-dazur/r" },
-  { country:"France",  title:"Saint-Tropez",  img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914498/StRec_zmw36a.jpg", href:"https://richardwiller.com/saint-tropez/" },
-  { country:"Grèce",   title:"Mykonos",       img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914494/Mykonos_qtfbyq.jpg", href:"https://richardwiller.com/mykonos/" },
-  { country:"Italie",  title:"Sardaigne",     img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914495/sardinia-300x186_rmbtfn.jpg", href:"https://richardwiller.com/sardaigne/" },
-  { country:"Espagne", title:"Mallorca",      img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914493/mallorca-300x189_tlu7cj.jpg", href:"https://richardwiller.com/mallorca/" },
-  { country:"Espagne", title:"Ibiza",         img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914492/ibiza-300x200_pwkdgq.jpg", href:"https://richardwiller.com/mallorca/" },
+  { country_fr:"France",  country_en:"France", title_fr:"Côte d'Azur",  title_en:"Côte d'Azur",  img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914492/CT1_uuy2ac.jpg",   href:"https://richardwiller.com/cote-dazur/r" },
+  { country_fr:"France",  country_en:"France", title_fr:"Saint-Tropez", title_en:"Saint-Tropez", img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914498/StRec_zmw36a.jpg",   href:"https://richardwiller.com/saint-tropez/" },
+  { country_fr:"Grèce",   country_en:"Greece", title_fr:"Mykonos",      title_en:"Mykonos",      img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914494/Mykonos_qtfbyq.jpg",  href:"https://richardwiller.com/mykonos/" },
+  { country_fr:"Italie",  country_en:"Italy",  title_fr:"Sardaigne",    title_en:"Sardinia",     img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914495/sardinia-300x186_rmbtfn.jpg", href:"https://richardwiller.com/sardaigne/" },
+  { country_fr:"Espagne", country_en:"Spain",  title_fr:"Mallorca",     title_en:"Mallorca",     img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914493/mallorca-300x189_tlu7cj.jpg", href:"https://richardwiller.com/mallorca/" },
+  { country_fr:"Espagne", country_en:"Spain",  title_fr:"Ibiza",        title_en:"Ibiza",        img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914492/ibiza-300x200_pwkdgq.jpg",  href:"https://richardwiller.com/mallorca/" },
 ];
 
 const SERVICES = [
-  { category:"Mobilité",   title:"Location Voitures de Luxe",    img:"https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=680&q=80&auto=format&fit=crop", href:"https://richardwiller.com/vehicule/" },
-  { category:"Nautique",   title:"Yachts & Bateaux",             img:"https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=680&q=80&auto=format&fit=crop", href:"https://richardwiller.com/yacht/" },
-  { category:"Aérien",     title:"Jets Privés & Hélicoptères",   img:"https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=680&q=80&auto=format&fit=crop", href:"https://richardwiller.com/transport-aerien/" },
-  { category:"Événements", title:"Expériences Événementielles",  img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914801/festival-de-cannes-1-536479-1200-0_wkyiva.webp", href:"https://richardwiller.com/evenementiel/" },
-  { category:"Exclusif",   title:"Services Premium +",           img:"https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=680&q=80&auto=format&fit=crop", href:"https://richardwiller.com/services/" },
+  { category_fr:"Mobilité",   category_en:"Mobility",  title_fr:"Location Voitures de Luxe",   title_en:"Luxury Car Rental",          img:"https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=680&q=80&auto=format&fit=crop",    href:"https://richardwiller.com/vehicule/" },
+  { category_fr:"Nautique",   category_en:"Nautical",  title_fr:"Yachts & Bateaux",             title_en:"Yachts & Boats",             img:"https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=680&q=80&auto=format&fit=crop",  href:"https://richardwiller.com/yacht/" },
+  { category_fr:"Aérien",     category_en:"Aerial",    title_fr:"Jets Privés & Hélicoptères",   title_en:"Private Jets & Helicopters", img:"https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=680&q=80&auto=format&fit=crop",  href:"https://richardwiller.com/transport-aerien/" },
+  { category_fr:"Événements", category_en:"Events",    title_fr:"Expériences Événementielles",  title_en:"Event Experiences",          img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914801/festival-de-cannes-1-536479-1200-0_wkyiva.webp", href:"https://richardwiller.com/evenementiel/" },
+  { category_fr:"Exclusif",   category_en:"Exclusive", title_fr:"Services Premium +",           title_en:"Premium Services +",         img:"https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=680&q=80&auto=format&fit=crop",  href:"https://richardwiller.com/services/" },
 ];
 
 /* ════════════════════════════════════════
-   BUILD CARD HTML
+   BUILD CARD HTML — bilingue via data-*
 ════════════════════════════════════════ */
 function buildCard(item) {
-  const lbl = item.country || item.category;
-  const ttl = item.title;
-  const el  = document.createElement('a');
+  const lbl_fr = item.country_fr || item.category_fr || '';
+  const lbl_en = item.country_en || item.category_en || '';
+  const ttl_fr = item.title_fr   || '';
+  const ttl_en = item.title_en   || '';
+  const el = document.createElement('a');
   el.className = 'card';
-  el.href = item.href;
-  el.target = '_blank';
-  el.rel = 'noopener';
+  el.href      = item.href;
+  el.target    = '_blank';
+  el.rel       = 'noopener';
   el.innerHTML = `
-    <img src="${item.img}" alt="${ttl}" loading="lazy">
+    <img src="${item.img}" alt="${ttl_fr}" loading="lazy">
     <div class="card-ov"></div>
-    <div class="card-body"><span class="c-lbl">${lbl}</span><span class="c-ttl">${ttl}</span></div>
-    <div class="card-arr"><svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5"/><polyline points="5 5 19 5 19 19"/></svg></div>
+    <div class="card-body">
+      <span class="c-lbl" data-fr="${lbl_fr}" data-en="${lbl_en}">${lbl_fr}</span>
+      <span class="c-ttl" data-fr="${ttl_fr}" data-en="${ttl_en}">${ttl_fr}</span>
+    </div>
+    <div class="card-arr">
+      <svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5"/><polyline points="5 5 19 5 19 19"/></svg>
+    </div>
   `;
   return el;
 }
 
 /* ════════════════════════════════════════
    AUTO-SCROLL SLIDER
-   - Infinite loop via duplicated cards
-   - Pause on hover / touch
-   - Manual swipe still works
 ════════════════════════════════════════ */
+const sliderRafs = {}; // stocke les RAF ids pour pouvoir les annuler si besoin
+
 function initAutoSlider(items, innerId, wrapId, dotsId, speed) {
-  const inner = document.getElementById(innerId);
-  const wrap  = document.getElementById(wrapId);
+  const inner  = document.getElementById(innerId);
+  const wrap   = document.getElementById(wrapId);
   const dotsEl = document.getElementById(dotsId);
   if (!inner || !wrap) return;
 
@@ -772,7 +1072,7 @@ function initAutoSlider(items, innerId, wrapId, dotsId, speed) {
   const allCards = [...items, ...items, ...items];
   allCards.forEach(item => inner.appendChild(buildCard(item)));
 
-  // Dots (based on original item count)
+  // Dots
   if (dotsEl) {
     dotsEl.innerHTML = '';
     items.forEach((_, i) => {
@@ -782,35 +1082,23 @@ function initAutoSlider(items, innerId, wrapId, dotsId, speed) {
     });
   }
 
-  // Measure one card width after render
-  let cardW = 0;
-  let totalW = 0;
-  let raf;
-  let pos = 0;
-  let paused = false;
-  let isDragging = false;
-  let dragStart = 0;
-  let dragPos = 0;
+  let cardW = 0, totalW = 0, raf, pos = 0, paused = false;
 
   function measure() {
     const firstCard = inner.firstElementChild;
     if (!firstCard) return;
-    cardW = firstCard.offsetWidth + 16; // 16 = gap
-    totalW = cardW * items.length;      // one set width
-    // Start at middle set to allow backward scrub
-    pos = totalW;
+    cardW  = firstCard.offsetWidth + 16;
+    totalW = cardW * items.length;
+    pos    = totalW;
     inner.style.transform = `translateX(-${pos}px)`;
   }
 
   function tick() {
-    if (!paused && !isDragging) {
+    if (!paused) {
       pos += speed;
-      // Loop: if past 2 sets, jump back one set
       if (pos >= totalW * 2) pos -= totalW;
-      if (pos < 0) pos += totalW;
+      if (pos < 0)           pos += totalW;
       inner.style.transform = `translateX(-${pos}px)`;
-
-      // Update dots
       if (dotsEl) {
         const idx = Math.round((pos % totalW) / cardW) % items.length;
         dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('on', i === idx));
@@ -819,19 +1107,15 @@ function initAutoSlider(items, innerId, wrapId, dotsId, speed) {
     raf = requestAnimationFrame(tick);
   }
 
-  // Pause on hover (desktop)
   wrap.addEventListener('mouseenter', () => paused = true);
-  wrap.addEventListener('mouseleave', () => { paused = false; isDragging = false; });
+  wrap.addEventListener('mouseleave', () => { paused = false; });
 
-  // Touch / mouse drag for manual swipe
   let touchStartX = 0, touchStartPos = 0;
-
   wrap.addEventListener('touchstart', e => {
     touchStartX = e.touches[0].clientX;
     touchStartPos = pos;
     paused = true;
   }, { passive: true });
-
   wrap.addEventListener('touchmove', e => {
     const dx = touchStartX - e.touches[0].clientX;
     pos = touchStartPos + dx;
@@ -839,18 +1123,14 @@ function initAutoSlider(items, innerId, wrapId, dotsId, speed) {
     if (pos < 0) pos += totalW;
     inner.style.transform = `translateX(-${pos}px)`;
   }, { passive: true });
-
   wrap.addEventListener('touchend', () => {
-    // Snap to nearest card
     pos = Math.round(pos / cardW) * cardW;
     inner.style.transform = `translateX(-${pos}px)`;
     setTimeout(() => { paused = false; }, 600);
   });
 
-  // Mouse drag
   let mDown = false, mStartX = 0, mStartPos = 0, mDragged = false;
   wrap.style.cursor = 'grab';
-
   wrap.addEventListener('mousedown', e => {
     mDown = true; mDragged = false; mStartX = e.clientX; mStartPos = pos;
     wrap.style.cursor = 'grabbing';
@@ -864,9 +1144,7 @@ function initAutoSlider(items, innerId, wrapId, dotsId, speed) {
       pos = Math.round(pos / cardW) * cardW;
       inner.style.transform = `translateX(-${pos}px)`;
       setTimeout(() => { paused = false; }, 600);
-    } else {
-      paused = false;
-    }
+    } else { paused = false; }
   });
   wrap.addEventListener('mousemove', e => {
     if (!mDown) return;
@@ -877,19 +1155,16 @@ function initAutoSlider(items, innerId, wrapId, dotsId, speed) {
     if (pos < 0) pos += totalW;
     inner.style.transform = `translateX(-${pos}px)`;
   });
-
-  // Prevent click after drag
   inner.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', e => { if (mDragged) e.preventDefault(); });
   });
 
-  // Init after fonts/images have a chance to load
   setTimeout(() => {
     measure();
     raf = requestAnimationFrame(tick);
+    sliderRafs[innerId] = raf;
   }, 300);
 
-  // Re-measure on resize
   window.addEventListener('resize', measure);
 }
 
@@ -899,6 +1174,17 @@ function initAutoSlider(items, innerId, wrapId, dotsId, speed) {
 window.addEventListener('load', () => {
   setTimeout(() => {
     document.getElementById('preloader').classList.add('hidden');
+
+    // Affiche le bouton de langue après le preloader
+    setTimeout(() => {
+      document.getElementById('lang-toggle').classList.add('lt-visible');
+    }, 400);
+
+    // Lance le banner d'installation après le preloader
+    setTimeout(() => {
+      initInstallBanner();
+    }, 1200);
+
   }, 2200);
 });
 
@@ -913,9 +1199,193 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 /* ════════════════════════════════════════
    INIT SLIDERS
 ════════════════════════════════════════ */
-// speed = px per frame (≈ 60fps → 0.5px/frame = very slow, luxe)
-initAutoSlider(DESTINATIONS, 'dAutoInner', 'dAutoWrap', 'dDots', 1,38);
-initAutoSlider(SERVICES,     'sAutoInner', 'sAutoWrap', 'sDots', 1,38);
+initAutoSlider(DESTINATIONS, 'dAutoInner', 'dAutoWrap', 'dDots', 0.50);
+initAutoSlider(SERVICES,     'sAutoInner', 'sAutoWrap', 'sDots', 0.45);
+
+/* ════════════════════════════════════════
+   TRADUCTION FR / EN
+   applyLang(lang) applique toutes les
+   traductions statiques + cartes sliders.
+════════════════════════════════════════ */
+let currentLang = localStorage.getItem('rtLang') || 'fr';
+
+function applyLang(lang) {
+  currentLang = lang;
+
+  // 1. Éléments statiques avec data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    const val = TRANSLATIONS[lang][key];
+    if (val !== undefined) el.innerHTML = val;
+  });
+
+  // 2. Cartes slider : .c-lbl et .c-ttl portent data-fr / data-en
+  document.querySelectorAll('.c-lbl[data-fr], .c-ttl[data-fr]').forEach(el => {
+    const val = el.dataset[lang];
+    if (val !== undefined) el.textContent = val;
+  });
+
+  // 3. Mise à jour du bouton toggle (affiche la langue CIBLE)
+  const btn = document.getElementById('lang-toggle');
+  if (btn) btn.querySelector('.lt-label').textContent = lang === 'fr' ? 'EN' : 'FR';
+
+  // 4. Attribut lang du html pour l'accessibilité
+  document.documentElement.lang = lang;
+
+  // 5. Mémorisation
+  localStorage.setItem('rtLang', lang);
+}
+
+// Appliquer la langue mémorisée au chargement
+applyLang(currentLang);
+
+// Bouton toggle
+document.getElementById('lang-toggle').addEventListener('click', () => {
+  applyLang(currentLang === 'fr' ? 'en' : 'fr');
+});
+
+/* ════════════════════════════════════════
+   INSTALL BANNER — PWA / Écran d'accueil
+   Logique :
+   · Pas de banner si déjà en mode standalone (déjà installé)
+   · Pas de banner si l'utilisateur l'a fermé < 7 jours
+   · iOS Safari  → instructions Share + "Ajouter à l'écran d'accueil"
+   · Android Chrome → beforeinstallprompt si dispo, sinon fallback texte
+   · Desktop → instructions génériques (rarement nécessaire)
+════════════════════════════════════════ */
+
+// Capture du prompt Android AVANT qu'il ne soit perdu
+let androidInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); // Empêche l'affichage automatique natif
+  androidInstallPrompt = e;
+});
+
+function initInstallBanner() {
+  const banner       = document.getElementById('install-banner');
+  const subEl        = document.getElementById('ib-sub-content');
+  const actionsEl    = document.getElementById('ib-actions-content');
+  const STORAGE_KEY  = 'rtInstallDismissed';
+  const DELAY_MS     = 7 * 24 * 60 * 60 * 1000; // 7 jours
+
+  // Ne pas afficher si déjà installé (mode standalone / fullscreen)
+  const isStandalone =
+    window.navigator.standalone === true ||  // iOS Safari
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.matchMedia('(display-mode: fullscreen)').matches;
+
+  if (isStandalone) return;
+
+  // Ne pas afficher si rejeté récemment
+  const dismissed = localStorage.getItem(STORAGE_KEY);
+  if (dismissed && (Date.now() - parseInt(dismissed, 10)) < DELAY_MS) return;
+
+  // Détection de la plateforme
+  const ua        = navigator.userAgent;
+  const isIOS     = /iphone|ipad|ipod/i.test(ua);
+  const isSafari  = /safari/i.test(ua) && !/chrome/i.test(ua) && !/crios/i.test(ua);
+  const isAndroid = /android/i.test(ua);
+
+  // Bouton fermeture (commun)
+  const closeBtn = document.createElement('button');
+  closeBtn.className   = 'ib-close-btn';
+  closeBtn.setAttribute('aria-label', 'Fermer');
+  closeBtn.innerHTML = `<svg viewBox="0 0 10 10"><line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/></svg>`;
+  closeBtn.addEventListener('click', () => {
+    banner.classList.remove('ib-visible');
+    localStorage.setItem(STORAGE_KEY, Date.now().toString());
+  });
+
+  /* ──────────────────────────────────
+     iOS Safari : instructions manuelles
+  ────────────────────────────────── */
+  if (isIOS && isSafari) {
+    subEl.innerHTML = `
+      <div class="ib-ios-steps">
+        <div class="ib-step">
+          <span class="ib-step-num">1</span>
+          <span>Appuyez sur
+            <!-- Icône Share iOS SVG inline -->
+            <svg style="width:13px;height:13px;vertical-align:middle;margin:0 2px;opacity:.7;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 17 12 21 8 17"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M20 12V5a2 2 0 00-2-2H6a2 2 0 00-2 2v7"/>
+            </svg>
+            <strong style="color:rgba(255,255,255,.65);">Partager</strong>
+          </span>
+        </div>
+        <span class="ib-step-sep">›</span>
+        <div class="ib-step">
+          <span class="ib-step-num">2</span>
+          <span><strong style="color:rgba(255,255,255,.65);">Ajouter à l'écran d'accueil</strong></span>
+        </div>
+      </div>
+    `;
+    // Pas de bouton "Installer" sur iOS — uniquement fermeture
+    actionsEl.appendChild(closeBtn);
+    showBanner(banner);
+    return;
+  }
+
+  /* ──────────────────────────────────
+     Android Chrome : prompt natif si dispo
+  ────────────────────────────────── */
+  if (isAndroid || androidInstallPrompt) {
+    if (androidInstallPrompt) {
+      subEl.textContent = 'Accédez instantanément depuis votre écran d\'accueil.';
+      const installBtn = document.createElement('button');
+      installBtn.className   = 'ib-install-btn';
+      installBtn.textContent = 'Installer';
+      installBtn.addEventListener('click', async () => {
+        androidInstallPrompt.prompt();
+        const { outcome } = await androidInstallPrompt.userChoice;
+        if (outcome === 'accepted') {
+          banner.classList.remove('ib-visible');
+        }
+        androidInstallPrompt = null;
+      });
+      actionsEl.appendChild(installBtn);
+      actionsEl.appendChild(closeBtn);
+      showBanner(banner);
+      return;
+    }
+    // Fallback Android sans prompt
+    subEl.innerHTML = `Appuyez sur <strong style="color:rgba(255,255,255,.65);">⋮</strong> puis <strong style="color:rgba(255,255,255,.65);">Ajouter à l'écran d'accueil</strong>.`;
+    actionsEl.appendChild(closeBtn);
+    showBanner(banner);
+    return;
+  }
+
+  /* ──────────────────────────────────
+     Desktop : fallback discret
+     (rarement affiché, seulement si
+     beforeinstallprompt a été capturé)
+  ────────────────────────────────── */
+  if (androidInstallPrompt) {
+    subEl.textContent = 'Installez l\'application pour un accès rapide.';
+    const installBtn = document.createElement('button');
+    installBtn.className   = 'ib-install-btn';
+    installBtn.textContent = 'Installer';
+    installBtn.addEventListener('click', async () => {
+      androidInstallPrompt.prompt();
+      const { outcome } = await androidInstallPrompt.userChoice;
+      if (outcome === 'accepted') banner.classList.remove('ib-visible');
+      androidInstallPrompt = null;
+    });
+    actionsEl.appendChild(installBtn);
+    actionsEl.appendChild(closeBtn);
+    showBanner(banner);
+  }
+  // Sur desktop sans prompt disponible → on n'affiche rien (non intrusif)
+}
+
+function showBanner(banner) {
+  // Petit délai pour que la transition CSS soit visible
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      banner.classList.add('ib-visible');
+    });
+  });
+}
+
 </script>
 </body>
 </html>
