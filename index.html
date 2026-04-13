@@ -221,11 +221,16 @@
   }
 
   .btn-wa {
-    background: var(--noir);
-    color: var(--blanc);
-    border: none;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
-    position: relative; overflow: hidden;
+  background: transparent;
+  color: var(--blanc);
+  border: 1px solid rgba(255,255,255,0.45);
+  box-shadow: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 700;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
   }
   .btn-wa::after {
     content: '';
@@ -233,7 +238,11 @@
     background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%);
     pointer-events: none;
   }
-  .btn-wa:hover { background: #222; transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.22); }
+  .btn-wa:hover {
+  background: rgba(255,255,255,0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+}
 
   .btn-out {
     background: transparent;
@@ -372,6 +381,8 @@
 
 .sl-outer::before,
 .sl-outer::after {
+  display: none;
+}
   content: '';
   position: absolute;
   top: 0;
@@ -1059,12 +1070,46 @@ const TRANSLATIONS = {
    DATA — Bilingue (FR + EN)
 ════════════════════════════════════════ */
 const DESTINATIONS = [
-  { country_fr:"France",  country_en:"France", title_fr:"Côte d'Azur",  title_en:"Côte d'Azur",  img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914492/CT1_uuy2ac.jpg",   href:"https://richardwiller.com/cote-dazur/r" },
-  { country_fr:"France",  country_en:"France", title_fr:"Saint-Tropez", title_en:"Saint-Tropez", img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914498/StRec_zmw36a.jpg",   href:"https://richardwiller.com/saint-tropez/" },
-  { country_fr:"Grèce",   country_en:"Greece", title_fr:"Mykonos",      title_en:"Mykonos",      img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914494/Mykonos_qtfbyq.jpg",  href:"https://richardwiller.com/mykonos/" },
-  { country_fr:"Italie",  country_en:"Italy",  title_fr:"Sardaigne",    title_en:"Sardinia",     img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914495/sardinia-300x186_rmbtfn.jpg", href:"https://richardwiller.com/sardaigne/" },
-  { country_fr:"Espagne", country_en:"Spain",  title_fr:"Mallorca",     title_en:"Mallorca",     img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914493/mallorca-300x189_tlu7cj.jpg", href:"https://richardwiller.com/mallorca/" },
-  { country_fr:"Espagne", country_en:"Spain",  title_fr:"Ibiza",        title_en:"Ibiza",        img:"https://res.cloudinary.com/dkm8cbylh/image/upload/v1775914492/ibiza-300x200_pwkdgq.jpg",  href:"https://richardwiller.com/mallorca/" },
+  {
+    country_fr:"France",
+    country_en:"France",
+    title_fr:"Côte d'Azur",
+    title_en:"Côte d'Azur",
+    video:"https://res.cloudinary.com/dkm8cbylh/video/upload/v1776071043/ssstik.io__mathildecapp_1776069590809_pmqmzq.mp4",
+    href:"https://richardwiller.com/cote-dazur/r"
+  },
+  {
+    country_fr:"France",
+    country_en:"France",
+    title_fr:"Saint-Tropez",
+    title_en:"Saint-Tropez",
+    video:"https://res.cloudinary.com/dkm8cbylh/video/upload/v1776071040/ssstik.io__coldwellbankerjager_1776070178727_nqlv42.mp4",
+    href:"https://richardwiller.com/saint-tropez/"
+  },
+  {
+    country_fr:"Grèce",
+    country_en:"Greece",
+    title_fr:"Mykonos",
+    title_en:"Mykonos",
+    video:"https://res.cloudinary.com/dkm8cbylh/video/upload/v1776071044/ssstik.io__myluxgroup_1776069192067_rwihxp.mp4",
+    href:"https://richardwiller.com/mykonos/"
+  },
+  {
+    country_fr:"Espagne",
+    country_en:"Spain",
+    title_fr:"Mallorca",
+    title_en:"Mallorca",
+    video:"https://res.cloudinary.com/dkm8cbylh/video/upload/v1776071040/ssstik.io__igoraivisual_1776069248490_rc2t00.mp4",
+    href:"https://richardwiller.com/mallorca/"
+  },
+  {
+    country_fr:"Espagne",
+    country_en:"Spain",
+    title_fr:"Ibiza",
+    title_en:"Ibiza",
+    video:"https://res.cloudinary.com/dkm8cbylh/video/upload/v1776071040/ssstik.io__homet0ur_1776069373166_sa6mtm.mp4",
+    href:"https://richardwiller.com/mallorca/"
+  }
 ];
 
 const SERVICES = [
